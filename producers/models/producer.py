@@ -38,8 +38,8 @@ class Producer:
         #
         #
         self.broker_properties = {
-            "servers": "PLAINTEXT://localhost:9092",
-            "schema_registry": "",
+            "servers": "PLAINTEXT://localhost:9092,PLAINTEXT://localhost:9093,PLAINTEXT://localhost:9094",
+            "schema_registry": "http://localhost:8081",
             "auto.create.topics.enable": False
         }
 
