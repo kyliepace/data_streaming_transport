@@ -40,14 +40,16 @@ class Producer:
         self.broker_properties = {
             "servers": "PLAINTEXT://localhost:9092",
             "schema_registry": "",
-            "auto.create.topics.enable": false
+            "auto.create.topics.enable": False
         }
 
-        self.client = AdminClient({"bootstrap.servers": self.broker_properties.servers})
+        self.client = AdminClient({
+          "bootstrap.servers": self.broker_properties.servers
+        })
 
         # If the topic does not already exist, try to create it
         if self.topic_name not in Producer.existing_topics:
-            self.create_topic(client)
+            self.create_topic()
             Producer.existing_topics.add(self.topic_name)
 
         # TODO: Configure the AvroProducer
@@ -55,7 +57,7 @@ class Producer:
           {"bootstrap.servers": self.broker_properties.servers},
           default_key_schema=self.key_schema,
           default_value_schema=self.value_schema,
-          schema_registry= self.broker_properties.schema_registry
+          schema_registry=self.broker_properties.schema_registry
         )
 
     def create_topic(self):
@@ -81,13 +83,10 @@ class Producer:
 
         for topic, future in futures.items():
           try:
-              future.result()
-              print(f"topic {topic} created")
+            future.result()
+            print(f"topic {topic} created")
           except Exception as e:
-              print(f"failed to create topic {self.topic_name}: {e}")
-
-    def time_millis(self):
-        return int(round(time.time() * 1000))
+            print(f"failed to create topic {self.topic_name}: {e}")
 
     def close(self):
         """Prepares the producer for exit by cleaning up the producer"""
