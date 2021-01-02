@@ -1,4 +1,4 @@
-confluent-kafka[avro]==1.1.0
+confluent_kafka[avro]==1.1.0
 dataclasses
 faust
 pandas==0.24.2
