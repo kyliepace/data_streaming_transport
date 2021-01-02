@@ -35,7 +35,7 @@ class Turnstile(Producer):
             key_schema=Turnstile.key_schema,
             value_schema=Turnstile.value_schema,
             num_partitions=10,
-            num_replicas=1,
+            num_replicas=3,
         )
         self.station = station
         self.turnstile_hardware = TurnstileHardware(station)
