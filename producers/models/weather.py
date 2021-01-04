@@ -21,7 +21,8 @@ class Weather(Producer):
         "status", "sunny partly_cloudy cloudy windy precipitation", start=0
     )
 
-    rest_proxy_url = "http://localhost:8082"
+    # rest_proxy_url = "http://localhost:8082"
+    rest_proxy_url = "http://rest-proxy:8082/"
 
     key_schema = avro.load(f"{Path(__file__).parents[0]}/schemas/weather_key.json")
     value_schema = avro.load(f"{Path(__file__).parents[0]}/schemas/weather_value.json")
@@ -66,22 +67,22 @@ class Weather(Producer):
         #
         #
         resp = requests.post(
-           f"{Weather.rest_proxy_url}/topics/com.udacity.weather",
-           headers=headers,
-           data=json.dumps(
-               {
-                  "value_schema": Weather.value_schema,
-                  "key_schema": Weather.key_schema,
-                  "records": [
-                    {
-                      "value": {
-                        "temperature": self.temp,
-                        "status": self.status
-                      }
-                    }
-                  ]
-               }
-           ),
+            f"{Weather.rest_proxy_url}/topics/com.udacity.weather",
+            headers=headers,
+            data=json.dumps(
+                {
+                    "value_schema": Weather.value_schema,
+                    "key_schema": Weather.key_schema,
+                    "records": [
+                        {
+                            "value": {
+                                "temperature": self.temp,
+                                "status": self.status
+                            }
+                        }
+                    ]
+                }
+            ),
         )
         resp.raise_for_status()
 

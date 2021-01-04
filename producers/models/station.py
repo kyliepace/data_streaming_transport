@@ -55,18 +55,18 @@ class Station(Producer):
         """Simulates train arrivals at this station"""
 
         self.producer.produce(
-           topic=self.topic_name,
-           key={"timestamp": self.time_millis()},
-           value={
-             "station_id": self.station_id,
-             "train_id": train,
-             "direction": direction,
-             "train_status": train.status,
-             "prev_station_id": prev_station_id,
-             "prev_direction": prev_direction
-           },
-           value_schema=Station.value_schema,
-           key_schema=Station.key_schema
+            topic=self.topic_name,
+            key={"timestamp": self.time_millis()},
+            value={
+                "station_id": self.station_id,
+                "train_id": train,
+                "direction": direction,
+                "train_status": train.status,
+                "prev_station_id": prev_station_id,
+                "prev_direction": prev_direction
+            },
+            value_schema=Station.value_schema,
+            key_schema=Station.key_schema
         )
 
     def __str__(self):
