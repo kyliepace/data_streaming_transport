@@ -10,7 +10,7 @@ from confluent_kafka.avro import AvroProducer, CachedSchemaRegistryClient
 logger = logging.getLogger(__name__)
 
 SCHEMA_REGISTRY_URL= 'http://localhost:8081'
-SERVERS= 'PLAINTEXT://localhost:9092,PLAINTEXT://localhost:9093,PLAINTEXT://localhost:9094'
+SERVERS= 'PLAINTEXT://localhost:9092'
 
 class Producer:
     """Defines and provides common functionality amongst Producers"""

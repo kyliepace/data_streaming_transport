@@ -39,7 +39,7 @@ class Station(Producer):
             key_schema=Station.key_schema,
             value_schema=Station.value_schema,
             num_partitions=5,
-            num_replicas=3,
+            num_replicas=1,
         )
 
         self.station_id = int(station_id)

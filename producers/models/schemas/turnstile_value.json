@@ -9,7 +9,7 @@
     },
     {
       "name": "num_entries",
-      "type": "int"
+      "type": "string"
     }
   ]
 }
