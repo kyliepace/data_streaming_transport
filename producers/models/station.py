@@ -29,7 +29,7 @@ class Station(Producer):
 
         #
         #
-        # TODO: Complete the below by deciding on a topic name, number of partitions, and number of
+        # Complete the below by deciding on a topic name, number of partitions, and number of
         # replicas
         #
         #

@@ -5,10 +5,12 @@ import time
 
 from confluent_kafka import avro
 from confluent_kafka.admin import AdminClient, NewTopic
-from confluent_kafka.avro import AvroProducer
+from confluent_kafka.avro import AvroProducer, CachedSchemaRegistryClient
 
 logger = logging.getLogger(__name__)
 
+SCHEMA_REGISTRY_URL= 'http://localhost:8081'
+SERVERS= 'PLAINTEXT://localhost:9092,PLAINTEXT://localhost:9093,PLAINTEXT://localhost:9094'
 
 class Producer:
     """Defines and provides common functionality amongst Producers"""
@@ -37,10 +39,13 @@ class Producer:
         # and use the Host URL for Kafka and Schema Registry!
         #
         #
+        # schema_registry = CachedSchemaRegistryClient({
+        #   "url": SCHEMA_REGISTRY_URL
+        # })
+
         self.broker_properties = {
-            "bootstrap.servers": "PLAINTEXT://localhost:9092,PLAINTEXT://localhost:9093,PLAINTEXT://localhost:9094",
-            "schema_registry": "http://localhost:8081",
-            "auto.create.topics.enable": False
+            "bootstrap.servers": SERVERS,
+            "schema.registry.url": SCHEMA_REGISTRY_URL
         }
 
         self.client = AdminClient({
@@ -60,8 +65,16 @@ class Producer:
           default_value_schema=self.value_schema,
         )
 
+    def topic_exists(self, topic_name):
+        """Checks if the given topic exists"""
+        topic_metadata = self.client.list_topics(timeout=5)
+        return topic_name in set(t.topic for t in iter(topic_metadata.topics.values()))
+
+
     def create_topic(self):
         """Creates the producer topic if it does not already exist"""
+        if self.topic_exists(self.topic_name):
+            return
 
         topic_config = {
           "cleanup.policy": "delete",
@@ -74,8 +87,8 @@ class Producer:
           [
               NewTopic(
                   topic=self.topic_name,
-                  num_partitions=10,
-                  replication_factor=1,
+                  num_partitions=self.num_partitions,
+                  replication_factor=self.num_replicas,
                   config=topic_config
               )
           ]
@@ -84,9 +97,9 @@ class Producer:
         for topic, future in futures.items():
           try:
             future.result()
-            print(f"topic {topic} created")
-          except Exception as e:
-            print(f"failed to create topic {self.topic_name}: {e}")
+            logger.info(f"topic {topic} created")
+          except Exception as error:
+            logger.error(f"failed to create topic {self.topic_name}: {error}")
 
     def close(self):
         """Prepares the producer for exit by cleaning up the producer"""
