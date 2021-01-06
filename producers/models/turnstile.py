@@ -47,13 +47,14 @@ class Turnstile(Producer):
         # emit a message to the turnstile topic for the number
         # of entries that were calculated
         #
-        self.producer.produce(
-            topic=self.topic_name,
-            key={"timestamp": self.time_millis()},
-            value={
-                "num_entries": num_entries,
-                "station_id": self.station.station_id
-            },
-            value_schema=Turnstile.value_schema,
-            key_schema=Turnstile.key_schema
-        )
+
+        for i in range (num_entries):
+            self.producer.produce(
+                topic=self.topic_name,
+                key={"timestamp": self.time_millis()},
+                value={
+                    "station_id": self.station.station_id,
+                    "station_name": self.station.name,
+                    "line": self.station.color.name
+                }
+            )

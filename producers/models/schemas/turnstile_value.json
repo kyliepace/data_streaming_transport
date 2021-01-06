@@ -7,9 +7,7 @@
       "name": "station_id",
       "type": "int"
     },
-    {
-      "name": "num_entries",
-      "type": "int"
-    }
+    {"name": "station_name", "type": ["null", "string"]},
+    {"name": "line", "type": ["null", "string"]}
   ]
 }
