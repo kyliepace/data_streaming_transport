@@ -33,7 +33,7 @@ class MainHandler(tornado.web.RequestHandler):
 
     def get(self):
         """Responds to get requests"""
-        logging.debug("rendering and writing handler template")
+        logger.debug("rendering and writing handler template")
         self.write(
             MainHandler.template.generate(weather=self.weather, lines=self.lines)
         )
@@ -46,7 +46,7 @@ def run_server():
             "Ensure that the KSQL Command has run successfully before running the web server!"
         )
         exit(1)
-    if topic_check.topic_exists("org.chicago.cta.stations.table.v1") is False:
+    if topic_check.topic_exists("org.chicago.cta.stations") is False:
         logger.fatal(
             "Ensure that Faust Streaming is running successfully before running the web server!"
         )
@@ -66,17 +66,19 @@ def run_server():
             "org.chicago.cta.weather",
             weather_model.process_message,
             offset_earliest=True,
+            is_avro=True
         ),
         KafkaConsumer(
-            "org.chicago.cta.stations.table",
+            "org.chicago.cta.stations",
             lines.process_message,
             offset_earliest=True,
             is_avro=False,
         ),
         KafkaConsumer(
-            "^org.chicago.cta.station.arrivals",
+            "org.chicago.cta.station.arrivals",
             lines.process_message,
             offset_earliest=True,
+            is_avro=True
         ),
         KafkaConsumer(
             "TURNSTILE_SUMMARY",

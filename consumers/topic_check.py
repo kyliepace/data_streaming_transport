@@ -3,7 +3,8 @@ def topic_exists(topic):
     """Checks if the given topic exists in Kafka"""
     client = AdminClient({"bootstrap.servers": "PLAINTEXT://localhost:9092"})
     topic_metadata = client.list_topics(timeout=5)
-    return topic in topic_metadata.topics is not None
+    return topic in topic_metadata.topics
+
 def contains_substring(to_test, substr):
     _before, match, _after = to_test.partition(substr)
     return len(match) > 0
