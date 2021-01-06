@@ -5,11 +5,11 @@
   "fields": [
     {
       "name": "station_id",
-      "type": "string"
+      "type": "int"
     },
     {
       "name": "num_entries",
-      "type": "string"
+      "type": "int"
     }
   ]
 }

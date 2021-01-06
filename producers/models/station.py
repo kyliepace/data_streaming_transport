@@ -53,15 +53,21 @@ class Station(Producer):
 
     def run(self, train, direction, prev_station_id, prev_direction):
         """Simulates train arrivals at this station"""
-
+        logger.info(type(self.station_id))
+        logger.info(type(train.train_id))
+        logger.info(direction)
+        logger.info(train.status.name)
+        logger.info(type(prev_station_id))
+        logger.info(self.color.name)
         self.producer.produce(
             topic=self.topic_name,
             key={"timestamp": self.time_millis()},
             value={
                 "station_id": self.station_id,
-                "train_id": train,
+                "train_id": train.train_id,
                 "direction": direction,
-                "train_status": train.status,
+                "line": self.color.name,
+                "train_status": train.status.name,
                 "prev_station_id": prev_station_id,
                 "prev_direction": prev_direction
             },

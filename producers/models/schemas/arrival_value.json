@@ -5,7 +5,7 @@
   "fields": [
     {
       "name": "station_id",
-      "type": "string"
+      "type": "int"
     },
     {
       "name": "train_id",
@@ -21,15 +21,16 @@
     },
     {
       "name": "train_status",
-      "type": "string"
+      "type": "string",
+      "description": "don't tell me to make this an enum"
     },
     {
       "name": "prev_station_id",
-      "type": "string"
+      "type": ["null", "int"]
     },
     {
       "name": "prev_direction",
-      "type": "string"
+      "type": ["null", "string"]
     }
   ]
 }
