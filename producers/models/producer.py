@@ -33,18 +33,18 @@ class Producer:
 
         #
         #
-        # TODO: Configure the broker properties below. Make sure to reference the project README
+        # Configure the broker properties below. Make sure to reference the project README
         # and use the Host URL for Kafka and Schema Registry!
         #
         #
         self.broker_properties = {
-            "servers": "PLAINTEXT://localhost:9092,PLAINTEXT://localhost:9093,PLAINTEXT://localhost:9094",
+            "bootstrap.servers": "PLAINTEXT://localhost:9092,PLAINTEXT://localhost:9093,PLAINTEXT://localhost:9094",
             "schema_registry": "http://localhost:8081",
             "auto.create.topics.enable": False
         }
 
         self.client = AdminClient({
-          "bootstrap.servers": self.broker_properties.servers
+          "bootstrap.servers": self.broker_properties["bootstrap.servers"]
         })
 
         # If the topic does not already exist, try to create it
@@ -52,12 +52,12 @@ class Producer:
             self.create_topic()
             Producer.existing_topics.add(self.topic_name)
 
-        # TODO: Configure the AvroProducer
+
+        # Configure the AvroProducer
         self.producer = AvroProducer(
-          {"bootstrap.servers": self.broker_properties.servers},
+          self.broker_properties,
           default_key_schema=self.key_schema,
           default_value_schema=self.value_schema,
-          schema_registry=self.broker_properties.schema_registry
         )
 
     def create_topic(self):
