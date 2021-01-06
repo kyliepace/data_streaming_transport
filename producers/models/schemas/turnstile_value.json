@@ -1,7 +1,7 @@
 {
-  "namespace": "com.cta",
+  "namespace": "org.chicago.cta",
   "type": "record",
-  "name": "turnstile.value",
+  "name": "turnstiles.value",
   "fields": [
     {
       "name": "station_id",

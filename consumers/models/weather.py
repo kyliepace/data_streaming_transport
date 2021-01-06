@@ -15,9 +15,10 @@ class Weather:
 
     def process_message(self, message):
         """Handles incoming weather data"""
-        logger.info("weather process_message is incomplete - skipping")
-        #
-        #
-        # TODO: Process incoming weather messages. Set the temperature and status.
-        #
-        #
+        logger.info("process weather message")
+        try:
+            value = json.loads(message.value())
+            self.temperature = value["temperature"]
+            self.status = value["status"]
+        except Exception as e:
+            logger.fatal("error consuming com.udacity.weather %s, %s", value, e)

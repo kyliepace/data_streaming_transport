@@ -1,7 +1,7 @@
 {
-  "namespace": "com.cta",
+  "namespace": "org.chicago.cta.station",
   "type": "record",
-  "name": "arrival.key",
+  "name": "arrivals.key",
   "fields": [
     {
       "name": "timestamp",

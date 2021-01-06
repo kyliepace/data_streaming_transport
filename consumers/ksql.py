@@ -25,19 +25,19 @@ CREATE TABLE turnstile (
     station_id INT,
     num_entries INT
 ) WITH (
-    KAFKA_TOPIC='turnstiles',
-    VALUE_FORMAT='avro',
+    KAFKA_TOPIC='org.chicago.cta.turnstiles',
+    VALUE_FORMAT='AVRO',
     KEY='station_id'
 );
 
-CREATE TABLE turnstile_summary
+CREATE TABLE TURNSTILE_SUMMARY
 WITH (
   VALUE_FORMAT='JSON',
-  KAFKA_TOPIC='turnstiles'
+  KAFKA_TOPIC='TURNSTILE_SUMMARY'
 ) AS
     SELECT station_id, COUNT(*) AS 'count'
     FROM turnstile
-    GROUP BY station_id
+    GROUP BY station_id;
 """
 
 
@@ -50,7 +50,10 @@ def execute_statement():
 
     resp = requests.post(
         f"{KSQL_URL}/ksql",
-        headers={"Content-Type": "application/vnd.ksql.v1+json"},
+        headers={
+          "Content-Type": "application/vnd.ksql.v1+json;charset=utf-8",
+          "Accept": "application/vnd.ksql.v1+json"
+        },
         data=json.dumps(
             {
                 "ksql": KSQL_STATEMENT,
