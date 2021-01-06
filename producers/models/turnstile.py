@@ -29,7 +29,7 @@ class Turnstile(Producer):
             .replace("'", "")
         )
 
-        topic_name = "com.udacity.turnstiles"
+        topic_name = "com.cta.turnstiles"
         super().__init__(
             topic_name, # TODO: Come up with a better topic name
             key_schema=Turnstile.key_schema,

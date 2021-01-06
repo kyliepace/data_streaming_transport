@@ -21,8 +21,7 @@ class Weather(Producer):
         "status", "sunny partly_cloudy cloudy windy precipitation", start=0
     )
 
-    # rest_proxy_url = "http://localhost:8082"
-    rest_proxy_url = "http://rest-proxy:8082/"
+    rest_proxy_url = "http://localhost:8082"
 
     key_schema = avro.load(f"{Path(__file__).parents[0]}/schemas/weather_key.json")
     value_schema = avro.load(f"{Path(__file__).parents[0]}/schemas/weather_value.json")
@@ -37,7 +36,7 @@ class Weather(Producer):
             key_schema=Weather.key_schema,
             value_schema=Weather.value_schema,
             num_partitions=3,
-            num_replicas=3
+            num_replicas=1
         )
 
         self.status = Weather.status.sunny
@@ -77,7 +76,7 @@ class Weather(Producer):
                         {
                             "value": {
                                 "temperature": self.temp,
-                                "status": self.status
+                                "status": self.status.name
                             }
                         }
                     ]

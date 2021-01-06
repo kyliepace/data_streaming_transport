@@ -5,11 +5,15 @@
   "fields": [
     {
       "name": "temperature",
-      "type": "int"
+      "type": "float"
     },
     {
       "name": "status",
-      "type": "string"
+      "type": {
+        "type": "enum",
+	      "name": "weather_status",
+	      "symbols": ["sunny", "partly_cloudy", "cloudy", "windy", "precipitation"]
+      }
     }
   ]
 }
