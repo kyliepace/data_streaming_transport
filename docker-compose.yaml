@@ -89,7 +89,7 @@ services:
     ports:
     - "8083:8083"
     environment:
-      CONNECT_BOOTSTRAP_SERVERS: "PLAINTEXT://kafka0:19092, PLAINTEXT://kafka1:19093, PLAINTEXT://kafka2:19094"
+      CONNECT_BOOTSTRAP_SERVERS: "PLAINTEXT://kafka0:19092"
       CONNECT_GROUP_ID: "connect"
       CONNECT_REST_ADVERTISED_HOST_NAME: "connect"
       CONNECT_PLUGIN_PATH: "/usr/share/java"
@@ -107,8 +107,6 @@ services:
       CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: "1"
     depends_on:
     - "kafka0"
-    - "kafka1"
-    - "kafka2"
     - "schema-registry"
 
   ksql:

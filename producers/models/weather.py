@@ -23,8 +23,8 @@ class Weather(Producer):
 
     rest_proxy_url = "http://localhost:8082"
 
-    key_schema = avro.load(f"{Path(__file__).parents[0]}/schemas/weather_key.json")
-    value_schema = avro.load(f"{Path(__file__).parents[0]}/schemas/weather_value.json")
+    key_schema = None
+    value_schema = None
 
     winter_months = set((0, 1, 2, 3, 10, 11))
     summer_months = set((6, 7, 8))
@@ -32,7 +32,7 @@ class Weather(Producer):
     def __init__(self, month):
 
         super().__init__(
-            "com.udacity.weather",
+            topic_name="com.udacity.weather",
             key_schema=Weather.key_schema,
             value_schema=Weather.value_schema,
             num_partitions=3,
@@ -45,6 +45,14 @@ class Weather(Producer):
             self.temp = 40.0
         elif month in Weather.summer_months:
             self.temp = 85.0
+
+        if Weather.key_schema is None:
+            with open(f"{Path(__file__).parents[0]}/schemas/weather_key.json") as f:
+                Weather.key_schema = json.load(f)
+
+        if Weather.value_schema is None:
+            with open(f"{Path(__file__).parents[0]}/schemas/weather_value.json") as f:
+                Weather.value_schema = json.load(f)
 
     def _set_weather(self, month):
         """Returns the current weather"""
@@ -66,14 +74,15 @@ class Weather(Producer):
         #
         #
         resp = requests.post(
-            f"{Weather.rest_proxy_url}/topics/com.udacity.weather",
+            f"{Weather.rest_proxy_url}/topics/{self.topic_name}",
             headers=headers,
             data=json.dumps(
                 {
-                    "value_schema": Weather.value_schema,
-                    "key_schema": Weather.key_schema,
+                    "value_schema": json.dumps(Weather.value_schema),
+                    "key_schema": json.dumps(Weather.key_schema),
                     "records": [
                         {
+                            "key": {"timestamp": self.time_millis()},
                             "value": {
                                 "temperature": self.temp,
                                 "status": self.status.name

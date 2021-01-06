@@ -32,10 +32,10 @@ CREATE TABLE turnstile (
 
 CREATE TABLE turnstile_summary
 WITH (
-  VALUE_FORMAT='JSON'
-  KEY='count'
+  VALUE_FORMAT='JSON',
+  KAFKA_TOPIC='turnstiles'
 ) AS
-    SELECT COUNT(*) AS 'count'
+    SELECT station_id, COUNT(*) AS 'count'
     FROM turnstile
     GROUP BY station_id
 """
