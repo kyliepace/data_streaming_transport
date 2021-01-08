@@ -59,14 +59,14 @@ def add_line(station):
     elif station.green:
         line = 'green'
     station.line = line
-    return line
+    return station
 
 
 @app.agent(topic)
-async def transformevent(records):
+async def transformevent(stations):
     """transform input `Station` records into `TransformedStation` records"""
-    records.add_processor(add_line)
-    async for station in records:
+    stations.add_processor(add_line)
+    async for station in stations:
         transformed_station = TransformedStation(
             station_id=station.station_id,
             station_name=station.station_name,
