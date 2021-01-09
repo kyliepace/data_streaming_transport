@@ -46,7 +46,7 @@ def run_server():
             "Ensure that the KSQL Command has run successfully before running the web server!"
         )
         exit(1)
-    if topic_check.topic_exists("org.chicago.cta.stations") is False:
+    if topic_check.topic_exists("faust.chicago.cta.stations") is False:
         logger.fatal(
             "Ensure that Faust Streaming is running successfully before running the web server!"
         )
@@ -58,7 +58,7 @@ def run_server():
     application = tornado.web.Application(
         [(r"/", MainHandler, {"weather": weather_model, "lines": lines})]
     )
-    application.listen(8888)
+    application.listen(8889)
 
     # Build kafka consumers
     consumers = [
