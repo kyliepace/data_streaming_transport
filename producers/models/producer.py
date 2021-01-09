@@ -45,7 +45,8 @@ class Producer:
 
         self.broker_properties = {
             "bootstrap.servers": SERVERS,
-            "schema.registry.url": SCHEMA_REGISTRY_URL
+            "schema.registry.url": SCHEMA_REGISTRY_URL,
+            "group.id": "cta_producers"
         }
 
         self.client = AdminClient({
