@@ -21,8 +21,7 @@
     },
     {
       "name": "train_status",
-      "type": "string",
-      "description": "don't tell me to make this an enum"
+      "type": "string"
     },
     {
       "name": "prev_station_id",
