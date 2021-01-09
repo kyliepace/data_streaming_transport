@@ -7,7 +7,6 @@ logger = logging.getLogger(__name__)
 
 
 # Faust will ingest records from Kafka in this format
-@dataclass(frozen=True)
 class Station(faust.Record):
     """station from kafka connect"""
     direction_id: str
@@ -22,7 +21,6 @@ class Station(faust.Record):
 
 
 # Faust will produce records to Kafka in this format
-@dataclass(frozen=True)
 class TransformedStation(faust.Record):
     """station with subset of kafka connect station plus line field"""
     station_id: int
