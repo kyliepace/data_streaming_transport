@@ -10,6 +10,7 @@ logger = logging.getLogger(__name__)
 class Station(faust.Record):
     """station from kafka connect"""
     direction_id: str
+    stop_id: int
     stop_name: str
     station_name: str
     station_descriptive_name: str
