@@ -35,14 +35,14 @@ class TransformedStation(faust.Record):
 app = faust.App("stream-stations", broker="kafka://localhost:9092", store="memory://")
 
 # Define the input Kafka Topic that Kafka Connect outputs to
-topic = app.topic("connect-org.chicago.cta.stations", key_type=int, value_type=Station)
+topic = app.topic("connect-org.chicago.cta.stations", value_type=Station)
 
 # Define the output Kafka Topic
-out_topic = app.topic("faust.chicago.cta.stations", partitions=1, key_type=int, value_type=TransformedStation)
+out_topic = app.topic("faust.chicago.cta.stations", partitions=1, value_type=TransformedStation)
 # Define a Faust Table
 table = app.Table(
-    "my-table",
-    default=str,
+    "faust.chicago.cta.stations.table",
+    default=TransformedStation,
     partitions=1,
     changelog_topic=out_topic,
 )
@@ -71,10 +71,14 @@ async def transformevent(stations):
             order=station.order,
             line=station.line
         )
+        table["station_id"] = station.station_id
+        table["station_name"] = station.station_name
+        table["order"] = station.order
+        table["line"] = station.line
         #
         # send the data to the topic you created above
         #
-        await out_topic.send(key=station.station_id, value=transformed_station)
+        await out_topic.send( value=transformed_station)
 
 
 if __name__ == "__main__":
